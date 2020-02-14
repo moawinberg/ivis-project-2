@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <title>IVIS Project 2</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+  <div id="container" class="container" ng-app="MainApp" ng-view ng-controller="mainController">
+    <div class="jumbotron">
+      <h1>IVIS Project 2</h1>
+      <p>Visualizing the World Through its Own Worldview</p>
+    </div>
+    <div>
+      <div class="button-container">
+        <div ng-repeat="wave in ['2010-2014', '2005-2009', '1999-2004', '1995-1998', '1990-1994'] track by $index">
+          <button type="button" ng-click="selectWave(wave, $index)" class="btn"
+            ng-class="activeIndex === $index ? 'btn-info' : 'btn-light'">{{ wave }}</button>
+        </div>
+      </div>
+    </div>
+    <div id="chart">
+      <canvas id="background"></canvas>
+      <canvas id="foreground"></canvas>
+      <canvas id="highlight"></canvas>
+      <svg></svg>
+    </div>
+    <div id="wrap">
+      <div class="box">
+        <div>
+          <h5>About</h5>
+          <p>
+            The parallel coordinates represent people's well being and what they believe is important in life.
+          </p>
+        </div>
+        <div class="divider"></div>
+        <div>
+          <p>
+            <strong>Brush</strong>: Drag vertically along an axis.<br />
+            <strong>Remove Brush</strong>: Tap the axis background.<br />
+            <strong>Reorder Axes</strong>: Drag a label horizontally.<br />
+            <strong>Invert Axis</strong>: Tap an axis label.<br />
+            <strong>Remove Axis</strong>: Drag axis label to the left edge.<br />
+          </p>
+        </div>
+        <div class="divider"></div>
+        <div>
+          <p>
+            Adapted from example by <a href="http://bl.ocks.org/syntagmatic/raw/3150059/">Kai Chang</a><br />
+          </p>
+          </p>
+        </div>
+      </div>
+      <div class="box">
+        <h5>Continents</h5>
+        <p id="legend">
+        </p>
+      </div>
+      <div class="box">
+        <h5>Countries</h5>
+        <p class="student-list" id="student-list">
+        </p>
+      </div>
+    </div>
+    <div style="border-top: 1px solid lightgray; padding-top: 30px; padding-bottom: 100px">
+      <h4 style="text-align: center;">Discovery Process</h4>
+      <br />
+      <div class="center">
+        <iframe
+          src="https://docs.google.com/presentation/d/e/2PACX-1vTTdGQkTJ6-1GZ8HvSUa64I3ZXuIS7k6vD6j2xJDaVcXy0-RORMkoQN_N3PzxBY52A9i76lfJxnFca0/embed?start=false&loop=false&delayms=3000"
+          frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true"
+          webkitallowfullscreen="true"></iframe>
+        <br />
+        <br />
+      </div>
+    </div>
+  </div>
+  <footer class="footer">
+    2020 &#8226 Moa Winberg &#8226 Data source <a href="http://www.worldvaluessurvey.org/wvs.jsp">WVS</a>
+    <br />
+  </footer>
+</body>
+<script src="https://mbostock.github.com/d3/d3.v2.js"></script>
+<script src="http://underscorejs.org/underscore.js"></script>
+<script src="app.js"></script>
+
+
+</html>
