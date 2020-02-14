@@ -34,6 +34,7 @@ angular.module('MainApp.controllers', []).
       render_speed = 50,
       brush_count = 0,
       excluded_groups = [];
+      selectedItems = [];
 
     var colors = {
       "Asia": [318, 65, 67],
@@ -168,7 +169,7 @@ angular.module('MainApp.controllers', []).
         .each(function (d) { d3.select(this).call(axis.scale(yscale[d])); })
         .append("svg:text")
         .attr("text-anchor", "middle")
-        .attr("y", function (d, i) { return i % 2 == 0 ? -25 : -50 })
+        .attr("y", function (d, i) { return i % 2 == 0 ? -20 : -40 })
         .attr("x", 0)
         .attr("class", "label")
         // .attr("transform", "rotate(-10)")
@@ -275,9 +276,18 @@ angular.module('MainApp.controllers', []).
     };
 
     function selectItem(d) {
-      d3.select("#foreground").style("opacity", "0.25");
-      // d3.selectAll(".row").style("opacity", function (p) { return (d.group == p) ? null : "0.3" });
-      path(d, highlighted, color(d.group, 1));
+      var selectedDiv = document.getElementById(d.name);
+
+      if (_.contains(selectedItems, d)) {
+        selectedDiv.classList.remove("selected");
+        selectedItems = _.filter(selectedItems, item => item !== d);
+        unhighlight();
+      } else {
+        selectedItems.push(d);
+        highlight(d);
+        selectedDiv.classList.add("selected");
+      }
+
     }
 
     // simple data table
@@ -294,6 +304,7 @@ angular.module('MainApp.controllers', []).
         .data(sample)
         .enter().append("div")
         .attr("class", "student-list-div")
+        .attr("id", function (d) { return `${d.name}` })
         .on("mouseover", highlight)
         .on("mouseout", unhighlight)
         .on("click", selectItem);
@@ -336,15 +347,26 @@ angular.module('MainApp.controllers', []).
     // Highlight single polyline
     function highlight(d) {
       d3.select("#foreground").style("opacity", "0.25");
-      // d3.selectAll(".row").style("opacity", function (p) { return (d.group == p) ? null : "0.3" });
+      d3.selectAll(".row").style("opacity", function (p) {
+        const selectedGroups = _.map(selectedItems, i => i.group);
+        if ((d.group === p) || (_.contains(selectedGroups, p))) {
+          return null;
+        }
+        return "0.3";
+      });
       path(d, highlighted, color(d.group, 1));
     }
 
     // Remove highlight
     function unhighlight() {
-      d3.select("#foreground").style("opacity", null);
-      d3.selectAll(".row").style("opacity", null);
+      if (!selectedItems.length) {
+        d3.select("#foreground").style("opacity", null);
+        d3.selectAll(".row").style("opacity", null);
+      }
       highlighted.clearRect(0, 0, w, h);
+      _.each(selectedItems, d => {
+        path(d, highlighted, color(d.group, 1));
+      });
     }
 
     function invert_axis(d) {

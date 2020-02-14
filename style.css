@@ -213,9 +213,12 @@ button#exclude-data:hover {
 }
 .student-list-div:hover {
   color: white;
-  background: gray;
+  background: #17a2b8;
+  font-weight: bold;
 }
-.student-list-div:hover .name {
+.selected {
+  color: white;
+  background: #17a2b8;
   font-weight: bold;
 }
 .color-block, .color-bar {
